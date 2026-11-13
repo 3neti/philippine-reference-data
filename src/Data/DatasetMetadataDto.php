@@ -17,6 +17,7 @@ final readonly class DatasetMetadataDto
         public string $license,
         public ?string $effectiveFrom = null,
         public ?string $effectiveTo = null,
+        public ?string $normalizerVersion = null,
     ) {
         if (! in_array($status, ['official', 'official_derived', 'curated', 'unverified'], true)) {
             throw new \InvalidArgumentException('Dataset status is invalid.');
@@ -24,6 +25,24 @@ final readonly class DatasetMetadataDto
         if (! preg_match('/^[a-f0-9]{64}$/i', $sourceSha256)) {
             throw new \InvalidArgumentException('sourceSha256 must be a SHA-256 hash.');
         }
+    }
+
+    /** @param array<string, mixed> $data */
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            dataset: (string) $data['dataset'],
+            version: (string) $data['version'],
+            authority: (string) $data['authority'],
+            status: (string) $data['status'],
+            sourceReference: (string) $data['sourceReference'],
+            sourceSha256: (string) $data['sourceSha256'],
+            retrievedAt: (string) $data['retrievedAt'],
+            license: (string) $data['license'],
+            effectiveFrom: isset($data['effectiveFrom']) ? (string) $data['effectiveFrom'] : null,
+            effectiveTo: isset($data['effectiveTo']) ? (string) $data['effectiveTo'] : null,
+            normalizerVersion: isset($data['normalizerVersion']) ? (string) $data['normalizerVersion'] : null,
+        );
     }
 
     /** @return array<string, string|null> */

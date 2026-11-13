@@ -20,7 +20,8 @@
         }
     },
     "scripts": {
-        "test": "pest"
+        "test": "pest",
+        "dataset:build:psgc": "php scripts/build-psgc-dataset.php resources/sources/psa/2026-09-30/PSGC-3Q-2026-Publication-Datafile.xlsx resources/datasets/philippine-geography/2026.3"
     },
     "config": {
         "sort-packages": true,

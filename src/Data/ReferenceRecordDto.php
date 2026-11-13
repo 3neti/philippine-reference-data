@@ -20,6 +20,19 @@ final readonly class ReferenceRecordDto
         }
     }
 
+    /** @param array<string, mixed> $data */
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            type: (string) $data['type'],
+            key: (string) $data['key'],
+            label: (string) $data['label'],
+            attributes: (array) ($data['attributes'] ?? []),
+            effectiveFrom: isset($data['effective_from']) ? (string) $data['effective_from'] : null,
+            effectiveTo: isset($data['effective_to']) ? (string) $data['effective_to'] : null,
+        );
+    }
+
     public function toArray(): array
     {
         return ['type' => $this->type, 'key' => $this->key, 'label' => $this->label, 'attributes' => $this->attributes, 'effective_from' => $this->effectiveFrom, 'effective_to' => $this->effectiveTo];

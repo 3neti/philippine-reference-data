@@ -91,16 +91,21 @@ interface ReferenceResolver
 
 ## Data Policy
 
-The scaffold contains schemas and contracts only. It does not yet publish
-PSGC, ZIP-code, telephone-prefix, or other data files. Dataset ingestion is a
-separate R&D slice and must include source review, licensing review, schema
-mapping, validation, hashes, and regression fixtures.
+The first published dataset is the PSA PSGC release `2026.3`. It is marked
+`official_derived` because the package normalizes the PSA workbook into a
+stable JSON representation. The original workbook, source manifest, hashes,
+and a small regression fixture are retained in the repository. ZIP-code,
+telephone-prefix, and alias datasets remain separate releases.
 
 ## Development
 
 ```bash
 composer install
 vendor/bin/pest
+composer dataset:build:psgc
 ```
+
+The dataset build command regenerates the committed PSA PSGC release from the
+retained source workbook and must produce the same release hashes.
 
 The package is PHP 8.4+, framework-neutral, and has no runtime dependencies.

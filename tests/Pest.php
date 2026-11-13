@@ -1,5 +1,3 @@
 <?php
 
-use Pest\Pest;
-
-Pest::extend(Tests\TestCase::class)->in('Feature');
+pest()->extend(LBHurtado\PhilippineReferenceData\Tests\TestCase::class)->in('Feature');

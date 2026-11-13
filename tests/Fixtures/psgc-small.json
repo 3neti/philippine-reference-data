@@ -1,0 +1,43 @@
+{
+    "package_type": "philippine-reference-dataset",
+    "schema_version": "reference-dataset.v1",
+    "metadata": {
+        "dataset": "philippine-geography",
+        "version": "fixture-2026.3",
+        "authority": "Philippine Statistics Authority (PSA)",
+        "status": "official_derived",
+        "sourceReference": "https://psa.gov.ph/classification/psgc",
+        "sourceSha256": "8aad47f84e4f6317dc4222b9fe35d36b5d71f2b74ad8f0c7622289c131dc9a59",
+        "retrievedAt": "2026-11-14T06:43:41+08:00",
+        "license": "CC BY 4.0",
+        "effectiveFrom": "2026-09-30",
+        "effectiveTo": null,
+        "normalizerVersion": "psgc-normalizer/1.0.0"
+    },
+    "records": [
+        {
+            "type": "region",
+            "key": "1300000000",
+            "label": "National Capital Region (NCR)",
+            "attributes": {"source_geographic_level": "Reg"},
+            "effective_from": null,
+            "effective_to": null
+        },
+        {
+            "type": "city",
+            "key": "1380600000",
+            "label": "City of Manila",
+            "attributes": {"source_geographic_level": "City", "city_class": "HUC"},
+            "effective_from": null,
+            "effective_to": null
+        },
+        {
+            "type": "barangay",
+            "key": "1380600001",
+            "label": "Barangay 1",
+            "attributes": {"source_geographic_level": "Bgy", "urban_rural": "U"},
+            "effective_from": null,
+            "effective_to": null
+        }
+    ]
+}

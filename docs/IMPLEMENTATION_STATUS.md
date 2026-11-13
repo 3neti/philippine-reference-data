@@ -7,10 +7,12 @@
 - Canonical JSON and SHA-256 hashing.
 - Resolver and dataset-repository contracts.
 - Provenance and licensing policy.
+- PSA PSGC `2026.3` normalized release with source workbook, manifests, hashes,
+  and a small regression fixture.
+- Reproducible `composer dataset:build:psgc` dataset-generation command.
 
 ## Not Yet Included
 
-- PSGC records.
 - ZIP-code records.
 - Telephone-prefix records.
 - Alias-resolution implementation.
@@ -18,5 +20,6 @@
 
 ## Next Slice
 
-Select one authoritative Philippine geography source, document its license and
-version, then add a small regression fixture and a validated dataset importer.
+Add a JSON repository/loader for versioned releases, then add explicit PSGC
+alias resolution and a POP integration adapter. ZIP-code and telephone data
+remain separate future releases.

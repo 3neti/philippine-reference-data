@@ -15,6 +15,18 @@ final readonly class ReferenceDatasetDto
         }
     }
 
+    /** @param array<string, mixed> $data */
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            metadata: DatasetMetadataDto::fromArray((array) $data['metadata']),
+            records: array_map(
+                static fn (array $record): ReferenceRecordDto => ReferenceRecordDto::fromArray($record),
+                (array) $data['records'],
+            ),
+        );
+    }
+
     public function find(string $type, string $key): ?ReferenceRecordDto
     {
         foreach ($this->records as $record) {
