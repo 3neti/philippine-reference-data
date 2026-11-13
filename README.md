@@ -89,6 +89,11 @@ interface ReferenceResolver
 }
 ```
 
+The PSGC implementation also exposes detailed outcomes: `exact`, `alias`,
+`ambiguous`, and `unresolved`. Ambiguous values never select the first match.
+See [`docs/CONSUMPTION.md`](docs/CONSUMPTION.md) for the JSON repository and
+POP validation adapter.
+
 ## Data Policy
 
 The first published dataset is the PSA PSGC release `2026.3`. It is marked

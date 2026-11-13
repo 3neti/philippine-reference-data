@@ -10,6 +10,9 @@
 - PSA PSGC `2026.3` normalized release with source workbook, manifests, hashes,
   and a small regression fixture.
 - Reproducible `composer dataset:build:psgc` dataset-generation command.
+- JSON release repository and DTO hydration.
+- PSGC exact, alias, ambiguous, and unresolved resolution outcomes.
+- Non-destructive POP locality validation adapter.
 
 ## Not Yet Included
 
@@ -20,6 +23,7 @@
 
 ## Next Slice
 
-Add a JSON repository/loader for versioned releases, then add explicit PSGC
-alias resolution and a POP integration adapter. ZIP-code and telephone data
-remain separate future releases.
+Add historical PSGC release selection and explicit alias governance. The EMS
+should consume both POP and reference-data packages through an application
+composition layer. ZIP-code and telephone data remain separate future
+releases.

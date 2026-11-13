@@ -3,6 +3,9 @@
 use LBHurtado\PhilippineReferenceData\Data\DatasetMetadataDto;
 use LBHurtado\PhilippineReferenceData\Data\ReferenceDatasetDto;
 use LBHurtado\PhilippineReferenceData\Data\ReferenceRecordDto;
+use LBHurtado\PhilippineReferenceData\Infrastructure\JsonReferenceDatasetRepository;
+use LBHurtado\PhilippineReferenceData\Infrastructure\PsgcReferenceResolver;
+use LBHurtado\PhilippineReferenceData\Integration\Pop\PopLocalityReferenceValidator;
 
 it('creates a provenance-backed deterministic dataset', function (): void {
     $dataset = new ReferenceDatasetDto(
@@ -34,4 +37,38 @@ it('loads the small PSGC regression fixture', function (): void {
     expect($dataset->records)->toHaveCount(3)
         ->and($dataset->find('region', '1300000000')->label)->toBe('National Capital Region (NCR)')
         ->and($dataset->find('barangay', '1380600001')->attributes['source_geographic_level'])->toBe('Bgy');
+});
+
+it('loads a release through the JSON repository and preserves immutability', function (): void {
+    $repository = new JsonReferenceDatasetRepository(dirname(__DIR__, 2) . '/resources/datasets');
+    $dataset = $repository->find('philippine-geography', '2026.3');
+
+    expect($dataset)->not->toBeNull()
+        ->and($dataset->find('city', '1380600000')->label)->toBe('City of Manila');
+
+    expect(fn () => $repository->persist($dataset))->toThrow(\RuntimeException::class);
+});
+
+it('resolves PSGC codes, names, aliases, ambiguity, and misses explicitly', function (): void {
+    $repository = new JsonReferenceDatasetRepository(dirname(__DIR__, 2) . '/resources/datasets');
+    $resolver = new PsgcReferenceResolver($repository);
+
+    expect($resolver->resolveDetailed('philippine-geography', '1380600000')->status)->toBe('exact')
+        ->and($resolver->resolveDetailed('philippine-geography', 'City of Manila', 'city')->status)->toBe('exact')
+        ->and($resolver->resolveDetailed('philippine-geography', 'Barangay 1', 'barangay')->status)->toBe('ambiguous')
+        ->and($resolver->resolveDetailed('philippine-geography', 'Alay 15-B', 'barangay')->status)->toBe('alias')
+        ->and($resolver->resolveDetailed('philippine-geography', 'Dumalneg', 'barangay')->status)->toBe('ambiguous')
+        ->and($resolver->resolveDetailed('philippine-geography', 'Not a real locality')->status)->toBe('unresolved')
+        ->and($resolver->resolve('philippine-geography', 'Dumalneg', 'barangay'))->toBeNull();
+});
+
+it('validates POP values without replacing their source values', function (): void {
+    $repository = new JsonReferenceDatasetRepository(dirname(__DIR__, 2) . '/resources/datasets');
+    $validator = new PopLocalityReferenceValidator(new PsgcReferenceResolver($repository));
+    $result = $validator->validate('City of Manila', 'city');
+
+    expect($result->sourceValue)->toBe('City of Manila')
+        ->and($result->sourceType)->toBe('city')
+        ->and($result->resolution->status)->toBe('exact')
+        ->and($result->resolution->record->key)->toBe('1380600000');
 });
